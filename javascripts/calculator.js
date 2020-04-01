@@ -10,20 +10,17 @@
 // Select all buttons of the calculator with class named calc-btn
 var buttons = document.querySelectorAll('.calc-btn');
 
-// Create a var for the callback containing function
-var calculate = function() {
-  calculator(this.innerHTML);
-};
-
 // Assign callback to all buttons
 for (var button of buttons) {
-  button.addEventListener('click', calculate);
+  button.addEventListener('click', function() {
+    calculator(this.innerHTML);
+  });
 }
 
-var calculateKeyboard = function(e) {
+// Assign callback for keyboard
+document.addEventListener('keyup', function(e) {
   calculator(e.key);
-};
-document.addEventListener('keyup', calculateKeyboard);
+});
 
 // Init calcul variable and memory variable
 var calcValue, calcMemory = 0;
