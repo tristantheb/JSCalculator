@@ -1,38 +1,11 @@
-// var body = document.querySelector("body");
-// newButton = document.createElement('button');
-// newButton.classList.add('btn');
-// newButton.textContent = "Cliquez sur moi !";
-// body.append(newButton);
-// var button = document.querySelector(".btn");
-// button.style.backgroundColor = "green";
-// var count = 0, reset;
-// button.addEventListener("click", function() {
-//   count++;
-//   button.textContent = `Cliqué ${count} fois !`;
-//   if (count < 10) {
-//     button.style.backgroundColor = "green";
-//   } else if (count < 20) {
-//     button.style.backgroundColor = "orange";
-//   } else if (count < 30) {
-//     button.style.backgroundColor = "red";
-//   }
-//   if (count === 20) {
-//     reset = document.createElement('button');
-//     reset.classList.add('calc-btn');
-//     reset.textContent = "Mise à 0 !";
-//     body.append(reset);
-//     reset.addEventListener("click", function() {
-//       count = 0;
-//       button.textContent = `Cliquez sur moi !`;
-//       button.style.backgroundColor = "green";
-//       reset.remove();
-//     });
-//   }
-// });
+/**
+ * @author tristantheb
+ * @version 1.0.0
+ */
 
-/*****************\
- *  Calculator   *
-\*****************/
+/**
+ * Global vars declarations
+ */
 
 // Select all buttons of the calculator with class named calc-btn
 var buttons = document.querySelectorAll('.calc-btn');
@@ -148,12 +121,13 @@ function useSpecialCaracterAndOperator(value) {
   let regex = /(([^\.]\d{1,}\.\d{1,}$)|(^[\.]\d{1,}))/g;
   console.log("Enter");
   // Check the previous writed caracter
-  let canAddOperator = screen.innerHTML.slice(-1) === "+" ? false :
-                      screen.innerHTML.slice(-1) === "-" ? false :
-                      screen.innerHTML.slice(-1) === "×" || screen.innerHTML.slice(-1) === "*" ? false :
-                      screen.innerHTML.slice(-1) === "÷" || screen.innerHTML.slice(-1) === "/" ? false :
-                      screen.innerHTML.slice(-1) === "." || value === "." && screen.innerHTML.match(regex) ? false :
-                      true;
+  let lastEntry = screen.innerHTML.slice(-1);
+  let canAddOperator = lastEntry === "+" ? false :
+                       lastEntry === "-" ? false :
+                       lastEntry === "×" || lastEntry === "*" ? false :
+                       lastEntry === "÷" || lastEntry === "/" ? false :
+                       lastEntry === "." || value === "." && screen.innerHTML.match(regex) ? false :
+                       true;
   if (canAddOperator) {
     // When screen contain values > 0, add somes parameters
     switch (value) {
