@@ -34,6 +34,7 @@ header {
 
 .calc-screen-content {
   background: linear-gradient(to top, #c4cead 20%, #eaf0dd 80%, #c4cead 100%);
+  border: 1px solid rgb(91, 91, 91);
   border-radius: 6px;
   box-shadow: 0 0 3px 1px rgb(73, 73, 73), 0 4px 0px 1px rgba(255, 255, 255, 0.8), 0 -3px 0px 1px rgb(190, 190, 190), 0 0 0 2px rgb(162, 162, 162);
   margin: 10px 15px 20px;
