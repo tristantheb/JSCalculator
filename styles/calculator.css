@@ -4,7 +4,8 @@
   --hover-color: rgb(0, 63, 122);
   --txtScreen-color: rgba(13, 125, 218, 0.8);
   --txtButton-color: rgba(255, 255, 255, 1);
-  --txt-shadow: 0 0 3px rgba(13, 125, 218, 0.8);
+  --txt-shadowLight: 0 0 3px rgba(13, 125, 218, 0.8);
+  --txt-shadowDark: 0 0 3px rgba(0, 0, 0, 0.8);
   --white-opa20: rgba(255, 255, 255, .2);
 }
 
@@ -28,7 +29,7 @@ header {
   height: 150px;
   justify-content: center;
   margin-bottom: 15px;
-  text-shadow: var(--txt-shadow);
+  text-shadow: var(--txt-shadowLight);
 }
 
 main {
@@ -56,7 +57,7 @@ main {
   overflow: hidden;
   text-align: right;
   text-overflow: ellipsis;
-  text-shadow: var(--txt-shadow);
+  text-shadow: var(--txt-shadowLight);
 }
 
 .calc-pad-content {
@@ -71,11 +72,11 @@ main {
 .calc-btn {
   background: var(--secondary-color);
   border: 1px solid var(--white-opa20);
-  border-radius: 12px;
   color: var(--txtButton-color);
   font-size: 1.6rem;
   margin: 8px;
   padding: 6px 0;
+  text-shadow: var(--txt-shadowDark);
 }
 
 .calc-btn:hover {

@@ -10,6 +10,10 @@ document.addEventListener("DOMContentLoaded", function() {
   calc2.init();
 });
 
+/**
+ * This factory generate a new calculator
+ * @param {string} cssId The ID CSS of the calculator
+ */
 function calculatorFactory(cssId) {
   return {
     /**
