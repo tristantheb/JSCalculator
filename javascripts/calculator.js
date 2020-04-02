@@ -6,6 +6,8 @@
 document.addEventListener("DOMContentLoaded", function() {
   calc1 = calculatorFactory("#calculator1");
   calc1.init();
+  calc2 = calculatorFactory("#calculator2");
+  calc2.init();
 });
 
 function calculatorFactory(cssId) {
