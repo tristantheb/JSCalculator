@@ -39,12 +39,12 @@ function calculatorFactory(cssId) {
       }
     
       // Assign callback for keyboard, activated by key release
-      document.addEventListener('keyup', function(e) {
-        _this.calcWrite(e.key);
-      });
+      // document.addEventListener('keyup', function(e) {
+      //   _this.calcWrite(e.key);
+      // });
     },
     /**
-     * Write the content on the screen
+     * @method calcWrite Write the content on the screen
      * @param {any} value The value of the button/keyboard key
      * @param {Screen} affectedScreen The screen of the actual object
      */
@@ -96,7 +96,7 @@ function calculatorFactory(cssId) {
       }
     },
     /**
-     * 
+     * @method setOperator Set the choosen operator when is possible
      * @param {string} value Get the operator value and set the value to the screen
      * @param {Screen} affectedScreen The screen of the actual object
      */
@@ -137,7 +137,7 @@ function calculatorFactory(cssId) {
       }
     },
     /**
-     * 
+     * @method useMemory Performs actions concerning the calculation memory
      * @param {string} value The button name of the memory
      * @param {Screen} affectedScreen The screen of the actual object
      */
@@ -154,17 +154,28 @@ function calculatorFactory(cssId) {
           this.calcMemory = 0;
           break;
         case "M+":
-          this.calcMemory += affectedScreen.innerText * 1;
-          affectedScreen.innerText = 0;
+          if(this.isValidMemoryUsage(affectedScreen.innerText)) {
+            this.calcMemory += affectedScreen.innerText * 1;
+            affectedScreen.innerText = 0;
+          } else {
+            console.warn("You cannot memorize a calculation that has not been completed.");
+          }
           break;
         case "M-":
-          this.calcMemory -= affectedScreen.innerText * 1;
-          affectedScreen.innerText = 0;
+          if(this.isValidMemoryUsage(affectedScreen.innerText)) {
+            this.calcMemory -= affectedScreen.innerText * 1;
+            affectedScreen.innerText = 0;
+          } else {
+            console.warn("You cannot memorize a calculation that has not been completed.");
+          }
           break;
         case "MR":
           affectedScreen.innerText = this.calcMemory;
           break;
       }
+    },
+    isValidMemoryUsage(toValidate) {
+      return !isNaN(toValidate);
     }
   };
 }
