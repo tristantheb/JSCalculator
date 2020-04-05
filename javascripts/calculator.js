@@ -1,14 +1,7 @@
 /**
  * @author tristantheb
- * @version 1.0.0
+ * @version 1.1.0
  */
-
-document.addEventListener("DOMContentLoaded", function() {
-  calc1 = calculatorFactory("#calculator1");
-  calc1.init();
-  calc2 = calculatorFactory("#calculator2");
-  calc2.init();
-});
 
 /**
  * This factory generate a new calculator
@@ -29,7 +22,7 @@ function calculatorFactory(cssId) {
     screen: 0,
     screenElement: {},
     /**
-     * @method init Initializes the calculator and adds all callbacks
+     * Initializes the calculator and adds all callbacks
      */
     init() {
       let _this = this;
@@ -50,49 +43,49 @@ function calculatorFactory(cssId) {
       // });
     },
     /**
-     * @method calcWrite Write the content on the screen
+     * Write the content on the screen
      * @param {any} value The value of the button/keyboard key
      * @param {Screen} affectedScreen The screen of the actual object
      */
     calcWrite(value, affectedScreen) {
       if (value === "R") {
         // Reset all values
-        affectedScreen.innerText = "0";
-        calcValue = 0;
+        affectedScreen.textContent = "0";
+        this.calcValue = 0;
       } else if (value === "C") {
         // Cancel the last written character
-        var reduceOfOne = affectedScreen.innerText.slice(0, -1);
-        affectedScreen.innerText = reduceOfOne;
-        if (affectedScreen.innerText === "") {
-          affectedScreen.innerText = "0";
+        var reduceOfOne = affectedScreen.textContent.slice(0, -1);
+        affectedScreen.textContent = reduceOfOne;
+        if (affectedScreen.textContent === "") {
+          affectedScreen.textContent = "0";
         }
       } else if (value === "=" || value === "Enter") {
         // Calcul the screen content
         /* jshint -W061 */
-        affectedScreen.innerText = eval(this.calcValue);
+        affectedScreen.textContent = eval(this.calcValue);
       } else if (!isNaN(value)) {
         // If is a Number, add the number on the screen and the calcul variable
         // Check if screen display 0 to create the first value, if isn't the case, concatenate the new number to the last caracter
-        if (Number(affectedScreen.innerText) === 0) {
-          affectedScreen.innerText = value;
+        if (Number(affectedScreen.textContent) === 0) {
+          affectedScreen.textContent = value;
           this.calcValue = value;
         } else {
-          affectedScreen.innerText += value;
+          affectedScreen.textContent += value;
           this.calcValue += value;
         }
       } else {
         // Non-special values
         if (value === "MC" || value === "M+" || value === "M-" || value === "MR") {
           this.useMemory(value, affectedScreen);
-        } else if (Number(affectedScreen.innerText) === 0) {
+        } else if (Number(affectedScreen.textContent) === 0) {
           // If the screen display 0, only allow certain type of parameters
           switch (value) {
             case "-":
-              affectedScreen.innerText += value;
+              affectedScreen.textContent += value;
               this.calcValue += "-";
               break;
             case ".":
-              affectedScreen.innerText = value;
+              affectedScreen.textContent = value;
               this.calcValue = ".";
               break;
           }
@@ -102,48 +95,72 @@ function calculatorFactory(cssId) {
       }
     },
     /**
-     * @method setOperator Set the choosen operator when is possible
-     * @param {string} value Get the operator value and set the value to the screen
+     * Set the choosen operator when is possible
+     * @param {string} newValue Get the operator value and set the value to the screen
      * @param {Screen} affectedScreen The screen of the actual object
      */
-    setOperator(value, affectedScreen) {
-      let regex = /(([^\.]\d{1,}\.\d{1,}$)|(^[\.]\d{1,}))/g;
-      // Check the previous writed caracter
-      let lastEntry = affectedScreen.innerHTML.slice(-1);
-      let canAddOperator = lastEntry === "+" ? false :
-                           lastEntry === "-" ? false :
-                           lastEntry === "×" || lastEntry === "*" ? false :
-                           lastEntry === "÷" || lastEntry === "/" ? false :
-                           lastEntry === "." || value === "." && affectedScreen.innerHTML.match(regex) ? false :
-                           true;
-      if (canAddOperator) {
+    setOperator(newValue, affectedScreen) {
+      if (this.canAddOperator(newValue, affectedScreen)) {
         // When screen contain values > 0, add somes parameters
-        switch (value) {
+        switch (newValue) {
           case "+":
-            affectedScreen.innerText += value;
+            affectedScreen.textContent += newValue;
             this.calcValue += "+";
             break;
           case "-":
-            affectedScreen.innerText += value;
+            affectedScreen.textContent += newValue;
             this.calcValue += "-";
             break;
           case "×"||"*":
-            affectedScreen.innerText += value;
+            affectedScreen.textContent += newValue;
             this.calcValue += "*";
             break;
           case "÷"||"/":
-            affectedScreen.innerText += value;
+            affectedScreen.textContent += newValue;
             this.calcValue += "/";
             break;
           case ".":
-            affectedScreen.innerText += value;
+            affectedScreen.textContent += newValue;
             this.calcValue += ".";
             break;
         }
       }
     },
     /**
-     * @method useMemory Performs actions concerning the calculation memory
+     * Check if the last writed character is an operator
+     * @param {string} newValue Get the operator value and set the value to the screen
+     * @param {Screen} affectedScreen The screen of the actual object
+     */
+    canAddOperator(newValue, affectedScreen) {
+      // Check the previous writed caracter
+      let lastEntry = affectedScreen.textContent.slice(-1);
+      switch (lastEntry) {
+        case "+":
+          return false;
+        case "-":
+          return false;
+        case "×"||"*":
+          return false;
+        case "÷"||"/":
+          return false;
+        case ".":
+          return false;
+        default:
+          if(this.isDualDotInNumber(newValue, affectedScreen)) return false;
+          return true;
+      }
+    },
+    /**
+     * Check if the last number contain a dot or not
+     * @param {string} newValue Get the operator value and set the value to the screen
+     * @param {Screen} affectedScreen The screen of the actual object
+     */
+    isDualDotInNumber(newValue, affectedScreen) {
+      const regexDot = /(([^\.]\d{1,}\.\d{1,}$)|(^[\.]\d{1,}))/g;
+      return newValue === "." && affectedScreen.textContent.match(regexDot);
+    },
+    /**
+     * Performs actions concerning the calculation memory
      * @param {string} value The button name of the memory
      * @param {Screen} affectedScreen The screen of the actual object
      */
@@ -160,26 +177,30 @@ function calculatorFactory(cssId) {
           this.calcMemory = 0;
           break;
         case "M+":
-          if(this.isValidMemoryUsage(affectedScreen.innerText)) {
-            this.calcMemory += affectedScreen.innerText * 1;
-            affectedScreen.innerText = 0;
+          if(this.isValidMemoryUsage(affectedScreen.textContent)) {
+            this.calcMemory += affectedScreen.textContent * 1;
+            affectedScreen.textContent = 0;
           } else {
             console.warn("You cannot memorize a calculation that has not been completed.");
           }
           break;
         case "M-":
-          if(this.isValidMemoryUsage(affectedScreen.innerText)) {
-            this.calcMemory -= affectedScreen.innerText * 1;
-            affectedScreen.innerText = 0;
+          if(this.isValidMemoryUsage(affectedScreen.textContent)) {
+            this.calcMemory -= affectedScreen.textContent * 1;
+            affectedScreen.textContent = 0;
           } else {
             console.warn("You cannot memorize a calculation that has not been completed.");
           }
           break;
         case "MR":
-          affectedScreen.innerText = this.calcMemory;
+          affectedScreen.textContent = this.calcMemory;
           break;
       }
     },
+    /**
+     * Check if the content is a valid number and not an unfinished calcul
+     * @param {string} toValidate The text content of the object Screen
+     */
     isValidMemoryUsage(toValidate) {
       return !isNaN(toValidate);
     }
